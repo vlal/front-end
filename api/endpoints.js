@@ -2,14 +2,14 @@
   'use strict';
 
   module.exports = {
-    catalogueUrl:  "http://catalogue",
-    tagsUrl:       "http://catalogue/tags",
-    cartsUrl:      "http://cart/carts",
-    ordersUrl:     "http://orders",
-    customersUrl:  "http://user/customers",
-    addressUrl:    "http://user/addresses",
-    cardsUrl:      "http://user/cards",
-    loginUrl:      "http://user/login",
-    registerUrl:   "http://user/register",
+    catalogueUrl:  "http://catalogue" + domain,
+    tagsUrl:       "http://catalogue" + domain + "/tags",
+    cartsUrl:      "http://cart" + domain + "/carts",
+    ordersUrl:     "http://orders" + domain,
+    customersUrl:  "http://user" + domain + "/customers",
+    addressUrl:    "http://user" + domain + "/addresses",
+    cardsUrl:      "http://user" + domain + "/cards",
+    loginUrl:      "http://user" + domain + "/login",
+    registerUrl:   "http://user" + domain + "/register",
   };
 }());
