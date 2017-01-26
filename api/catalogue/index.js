@@ -8,7 +8,8 @@
     , app       = express()
 
   app.get("/catalogue/images*", function (req, res, next) {
-    var url = endpoints.catalogueUrl + req.url.toString();
+
+    var url = endpoints.catalogueUrl + '.mesos-executeinstance.weave.local' + req.url.toString();
     request.get(url)
         .on('error', function(e) { next(e); })
         .pipe(res);
