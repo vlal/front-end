@@ -6,7 +6,7 @@
     var arg = val.split("=");
     if (arg.length > 1) {
       if (arg[0] == "--domain") {
-        domain = arg[1];
+        domain = "." + arg[1];
         console.log("Setting domain to:", domain);
       }
     }
