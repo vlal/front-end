@@ -79,7 +79,7 @@
         function (order, addressLink, cardLink, callback) {
           async.parallel([
               function (callback) {
-                console.log("GET Request to HEREHEREH: " + addressLink);
+                console.log("GET Request to: " + addressLink);
                 request.get(addressLink, function (error, response, body) {
                   if (error) {
                     callback(error);
