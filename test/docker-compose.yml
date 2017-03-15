@@ -15,9 +15,17 @@ services:
     restart: always
     environment:
       - reschedule:on-node-failure
-  cart:
-    image: weaveworksdemos/cart
-    hostname: cart
+  catalogue-db:
+    image: weaveworksdemos/catalogue-db
+    hostname: catalogue-db
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=""
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_DATABASE=socksdb
+  carts:
+    image: weaveworksdemos/carts
+    hostname: carts
     restart: always
     environment:
       - reschedule:on-node-failure

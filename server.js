@@ -6,22 +6,28 @@ var request      = require("request")
   , async        = require("async")
   , cookieParser = require("cookie-parser")
   , session      = require("express-session")
-  , epimetheus   = require("epimetheus")
   , config       = require("./config")
   , helpers      = require("./helpers")
   , cart         = require("./api/cart")
   , catalogue    = require("./api/catalogue")
   , orders       = require("./api/orders")
   , user         = require("./api/user")
+  , metrics      = require("./api/metrics")
   , app          = express()
 
-epimetheus.instrument(app);
-
 app.use(express.static("public"));
-app.use(session(config.session));
+app.use(metrics);
+if(process.env.SESSION_REDIS) {
+    console.log('Using the redis based session manager');
+    app.use(session(config.session_redis));
+}
+else {
+    console.log('Using local session manager');
+    app.use(session(config.session));
+}
+
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(helpers.errorHandler);
 app.use(helpers.sessionMiddleware);
 app.use(morgan("dev", {}));
 
@@ -41,6 +47,8 @@ app.use(cart);
 app.use(catalogue);
 app.use(orders);
 app.use(user);
+
+app.use(helpers.errorHandler);
 
 var server = app.listen(process.env.PORT || 8079, function () {
   var port = server.address().port;

@@ -106,5 +106,53 @@
     });
   });
 
+// Update cart item
+  app.post("/cart/update", function (req, res, next) {
+    console.log("Attempting to update cart item: " + JSON.stringify(req.body));
+    
+    if (req.body.id == null) {
+      next(new Error("Must pass id of item to update"), 400);
+      return;
+    }
+    if (req.body.quantity == null) {
+      next(new Error("Must pass quantity to update"), 400);
+      return;
+    }
+    var custId = helpers.getCustomerId(req, app.get("env"));
+
+    async.waterfall([
+        function (callback) {
+          request(endpoints.catalogueUrl + "/catalogue/" + req.body.id.toString(), function (error, response, body) {
+            console.log(body);
+            callback(error, JSON.parse(body));
+          });
+        },
+        function (item, callback) {
+          var options = {
+            uri: endpoints.cartsUrl + "/" + custId + "/items",
+            method: 'PATCH',
+            json: true,
+            body: {itemId: item.id, quantity: parseInt(req.body.quantity), unitPrice: item.price}
+          };
+          console.log("PATCH to carts: " + options.uri + " body: " + JSON.stringify(options.body));
+          request(options, function (error, response, body) {
+            if (error) {
+              callback(error)
+                return;
+            }
+            callback(null, response.statusCode);
+          });
+        }
+    ], function (err, statusCode) {
+      if (err) {
+        return next(err);
+      }
+      if (statusCode != 202) {
+        return next(new Error("Unable to add to cart. Status code: " + statusCode))
+      }
+      helpers.respondStatus(res, statusCode);
+    });
+  });
+  
   module.exports = app;
 }());

@@ -1,8 +1,8 @@
-IMAGE=frontend
+IMAGE=front-end
 
 .PHONY: test coverage
 
-up: compose test-image server
+up: compose test-image deps server
 
 down: kill-server kill-compose
 
