@@ -58,7 +58,7 @@
     async.waterfall([
         function (callback) {
           request(endpoints.customersUrl + "/" + custId, function (error, response, body) {
-            if (error || response.status_code === 500) {
+            if (error || body.status_code === 500) {
               callback(error);
               return;
             }
